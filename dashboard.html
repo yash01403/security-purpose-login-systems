@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dashboard</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial;
+      background: #f4f6f9;
+    }
+
+    /* Navbar */
+    .navbar {
+      background: #007bff;
+      color: white;
+      padding: 15px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .navbar button {
+      background: red;
+      border: none;
+      color: white;
+      padding: 8px 12px;
+      cursor: pointer;
+    }
+
+    /* Cards */
+    .container {
+      display: flex;
+      justify-content: space-around;
+      margin-top: 30px;
+      flex-wrap: wrap;
+    }
+
+    .card {
+      background: white;
+      padding: 20px;
+      width: 250px;
+      margin: 10px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #ccc;
+      text-align: center;
+    }
+
+    .card h2 {
+      margin: 10px 0;
+    }
+
+    /* Activity */
+    .activity {
+      width: 80%;
+      margin: 30px auto;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #ccc;
+    }
+
+    ul {
+      text-align: left;
+    }
+
+  </style>
+</head>
+
+<body>
+
+<!-- Navbar -->
+<div class="navbar">
+  <h2>Welcome User 👋</h2>
+  <button onclick="logout()">Logout</button>
+</div>
+
+<!-- Cards -->
+<div class="container">
+  <div class="card">
+    <h3>🔐 Security Status</h3>
+    <h2 style="color:green;">Safe</h2>
+  </div>
+
+  <div class="card">
+    <h3>🕒 Last Login</h3>
+    <h2 id="lastLogin"></h2>
+  </div>
+
+  <div class="card">
+    <h3>📊 Total Logins</h3>
+    <h2 id="loginCount">0</h2>
+  </div>
+</div>
+
+<!-- Activity Section -->
+<div class="activity">
+  <h3>📋 Recent Activity</h3>
+  <ul id="activityList"></ul>
+</div>
+
+<script>
+// Logout
+function logout() {
+  window.location.href = "index.html";
+}
+
+// Last login time
+const now = new Date();
+document.getElementById("lastLogin").innerText = now.toLocaleString();
+
+// Login count
+let count = localStorage.getItem("loginCount") || 0;
+count++;
+localStorage.setItem("loginCount", count);
+document.getElementById("loginCount").innerText = count;
+
+// Activity log
+let activity = JSON.parse(localStorage.getItem("activity")) || [];
+activity.push("Login at " + now.toLocaleTimeString());
+
+localStorage.setItem("activity", JSON.stringify(activity));
+
+const list = document.getElementById("activityList");
+activity.slice(-5).reverse().forEach(item => {
+  list.innerHTML += `<li>${item}</li>`;
+});
+</script>
+
+</body>
+</html>
